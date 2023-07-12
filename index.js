@@ -116,6 +116,33 @@ function rectangularCollision({ rect1, rect2 }) {
   );
 }
 
+function determineWinner({ player, enemy, timerId }) {
+  clearTimeout(timerId);
+  document.querySelector(".result").style.display = "flex";
+  if (player.health === enemy.health) {
+    document.querySelector(".result").innerHTML = "Empate";
+  } else if (player.health > enemy.health) {
+    document.querySelector(".result").innerHTML = "Gana el jugador 1";
+  } else if (player.health < enemy.health) {
+    document.querySelector(".result").innerHTML = "Gana el jugador 2";
+  }
+}
+
+let timer = 6;
+let timerId;
+function decreaseTimer() {
+  if (timer > 0) {
+    timerId = setTimeout(decreaseTimer, 1000);
+    timer--;
+    document.querySelector("#timer").innerHTML = timer;
+  }
+
+  if (timer === 0) {
+    determineWinner({ player, enemy, timerId });
+  }
+}
+decreaseTimer();
+
 function animate() {
   window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
   c.fillStyle = "black"; // Esto es para que el canvas se rellene de color negro
@@ -164,6 +191,11 @@ function animate() {
     player.health -= 10;
     document.querySelector("#playerHealthContainer").style.width =
       player.health + "%";
+  }
+
+  //Game over cuando la vida de un jugador llega a 0
+  if (player.health <= 0 || enemy.health <= 0) {
+    determineWinner({ player, enemy, timerId });
   }
 }
 

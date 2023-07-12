@@ -52,9 +52,24 @@
   background-color: rgb(38, 0, 255);
 }
 
-.timer {
+#timer {
   background-color: red;
   height: 100px;
   width: 100px;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result {
+  position: absolute;
+  color: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
