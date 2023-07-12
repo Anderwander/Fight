@@ -9,21 +9,46 @@ c.fillRect(0, 0, canvas.width, canvas.height); // Esto es para rellenar el canva
 const gravity = 0.7;
 
 class Sprite {
-  constructor({ position, velocity }) {
+  constructor({ position, velocity, color = "red", offset }) {
     this.position = position;
     this.velocity = velocity;
+    this.width = 50;
     this.height = 150;
     this.lastkey;
     this.isJumping = false; // Nuevo estado para el salto
+    this.attackBox = {
+      position: {
+        x: this.position.x,
+        y: this.position.y,
+      },
+      offset,
+      width: 100,
+      height: 50,
+    };
+    this.color = color;
+    this.isAttacking;
   }
 
   draw() {
-    c.fillStyle = "red";
-    c.fillRect(this.position.x, this.position.y, 50, this.height);
+    c.fillStyle = this.color;
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+    // Caja de ataque
+    if (this.isAttacking) {
+      c.fillStyle = "green";
+      c.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+      );
+    }
   }
 
   update() {
     this.draw();
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+    this.attackBox.position.y = this.position.y;
 
     this, (this.position.x += this.velocity.x);
     this.position.y += this.velocity.y;
@@ -42,16 +67,26 @@ class Sprite {
       this.isJumping = true;
     }
   }
+
+  attack() {
+    this.isAttacking = true;
+    setTimeout(() => {
+      this.isAttacking = false;
+    }, 100);
+  }
 }
 
 const player = new Sprite({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 10 },
+  offset: { x: 0, y: 0 },
 });
 
 const enemy = new Sprite({
   position: { x: 400, y: 100 },
   velocity: { x: 0, y: 0 },
+  color: "blue",
+  offset: { x: -50, y: 0 },
 });
 
 console.log(player);
@@ -70,6 +105,15 @@ const keys = {
     pressed: false,
   },
 };
+
+function rectangularCollision({ rect1, rect2 }) {
+  return (
+    rect1.attackBox.position.x + rect1.attackBox.width >= rect2.position.x &&
+    rect1.attackBox.position.x <= rect2.position.x + rect2.width &&
+    rect1.attackBox.position.y + rect1.attackBox.height >= rect2.position.y &&
+    rect1.attackBox.position.y <= rect2.position.y + rect2.height
+  );
+}
 
 function animate() {
   window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
@@ -97,6 +141,25 @@ function animate() {
   } else if (keys.ArrowRight.pressed && enemy.lastkey === "ArrowRight") {
     enemy.velocity.x = 5;
   }
+
+  //Colisiones
+  //colisiones del jugador con el enemigo
+  if (
+    rectangularCollision({ rect1: player, rect2: enemy }) &&
+    player.isAttacking
+  ) {
+    player.isAttacking = false;
+    console.log("player colision");
+  }
+
+  //colisiones del enemigo con el jugador
+  if (
+    rectangularCollision({ rect1: enemy, rect2: player }) &&
+    enemy.isAttacking
+  ) {
+    enemy.isAttacking = false;
+    console.log("enemy colision");
+  }
 }
 
 animate(); // Esto es para que se ejecute la función animate
@@ -120,6 +183,10 @@ window.addEventListener("keydown", (event) => {
       player.jump();
       break;
 
+    case " ": // Esto es para que cuando se presione la barra espaciadora, se ejecute la función attack
+      player.attack();
+      break;
+
     //Keys del enemigo
 
     case "ArrowRight": // Aquí en el caso de wque la tecla presionada sea ArrowRight, se ejecuta lo siguiente
@@ -134,6 +201,10 @@ window.addEventListener("keydown", (event) => {
 
     case "ArrowUp":
       enemy.jump();
+      break;
+
+    case "ArrowDown":
+      enemy.attack();
       break;
   }
   console.log(event.key);
@@ -162,6 +233,4 @@ window.addEventListener("keyup", (event) => {
       keys.ArrowLeft.pressed = false;
       break;
   }
-
-  console.log(event.key);
 });
