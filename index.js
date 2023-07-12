@@ -30,6 +30,13 @@ const player = new Fighter({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 10 },
   offset: { x: 0, y: 0 },
+  imageSrc: "./img/samuraiMack/Idle.png",
+  framesMax: 8,
+  scale: 2.5,
+  offset: {
+    x: 215,
+    y: 155,
+  },
 });
 
 const enemy = new Fighter({
@@ -37,6 +44,7 @@ const enemy = new Fighter({
   velocity: { x: 0, y: 0 },
   color: "blue",
   offset: { x: -50, y: 0 },
+  imageSrc: "./img/shop.png",
 });
 
 console.log(player);
