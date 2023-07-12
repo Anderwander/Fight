@@ -37,6 +37,16 @@ const player = new Fighter({
     x: 215,
     y: 155,
   },
+  sprites: {
+    idle: {
+      imageSrc: "./img/samuraiMack/Idle.png",
+      framesMax: 8,
+    },
+    run: {
+      imageSrc: "./img/samuraiMack/Run.png",
+      framesMax: 8,
+    },
+  },
 });
 
 const enemy = new Fighter({
@@ -80,12 +90,16 @@ function animate() {
   enemy.velocity.x = 0;
 
   //Movimiento del jugador
+  player.image = player.sprites.idle.image;
+
   if (keys.a.pressed && player.lastkey === "a") {
     // Aquí dice que  si la tecla está presionada y la última tecla presionada fue a, entonces el personaje se mueva a la izquierda
     player.velocity.x = -5; // Esto es para que el personaje se mueva 5 px a la izquierda
+    player.image = player.sprites.run.image;
   } else if (keys.d.pressed && player.lastkey === "d") {
     // Aquí dice que  si la tecla está presionada y la última tecla presionada fue d, entonces el personaje se mueva a la derecha
     player.velocity.x = 5; // Esto es para que el personaje se mueva 5 px a la derecha
+    player.image = player.sprites.run.image;
   }
 
   //Movimiento del enemigo
