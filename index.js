@@ -1,8 +1,8 @@
 const canvas = document.querySelector("canvas"); // Esto hace referencia al elemento canvas del HTML
 const c = canvas.getContext("2d"); // Esto es para obtener el contexto del canvas, en este caso 2d
 
-canvas.width = innerWidth; // Esto es para que el canvas ocupe todo el ancho de la pantalla (hay que orobar, sino serían 1024)
-canvas.height = innerHeight; // Esto es para que el canvas ocupe todo el alto de la pantalla (hay que orobar, sino serían 576)
+canvas.width = 1024; // Esto es para que el canvas ocupe todo el ancho de la pantalla (hay que orobar, sino serían 1024)(Podría ser innerWidth)
+canvas.height = 576; // Esto es para que el canvas ocupe todo el alto de la pantalla (hay que orobar, sino serían 576)(Podría ser innerHeight)
 
 c.fillRect(0, 0, canvas.width, canvas.height); // Esto es para rellenar el canvas de color negro
 
@@ -27,6 +27,7 @@ class Sprite {
     };
     this.color = color;
     this.isAttacking;
+    this.health = 100;
   }
 
   draw() {
@@ -149,7 +150,9 @@ function animate() {
     player.isAttacking
   ) {
     player.isAttacking = false;
-    console.log("player colision");
+    enemy.health -= 10;
+    document.querySelector("#enemyHealthContainer").style.width =
+      enemy.health + "%";
   }
 
   //colisiones del enemigo con el jugador
@@ -158,7 +161,9 @@ function animate() {
     enemy.isAttacking
   ) {
     enemy.isAttacking = false;
-    console.log("enemy colision");
+    player.health -= 10;
+    document.querySelector("#playerHealthContainer").style.width =
+      player.health + "%";
   }
 }
 
