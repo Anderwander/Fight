@@ -14,6 +14,7 @@ class Sprite {
     this.velocity = velocity;
     this.height = 150;
     this.lastkey;
+    this.isJumping = false; // Nuevo estado para el salto
   }
 
   draw() {
@@ -29,7 +30,17 @@ class Sprite {
 
     if (this.position.y + this.height + this.velocity.y >= canvas.height) {
       this.velocity.y = 0;
-    } else this.velocity.y += gravity;
+      this.isJumping = false; // Actualizar el estado del salto al tocar el suelo
+    } else {
+      this.velocity.y += gravity;
+    }
+  }
+
+  jump() {
+    if (!this.isJumping) {
+      this.velocity.y = -20;
+      this.isJumping = true;
+    }
   }
 }
 
@@ -106,7 +117,7 @@ window.addEventListener("keydown", (event) => {
       break;
 
     case "w":
-      player.velocity.y = -20;
+      player.jump();
       break;
 
     //Keys del enemigo
@@ -122,7 +133,7 @@ window.addEventListener("keydown", (event) => {
       break;
 
     case "ArrowUp":
-      enemy.velocity.y = -20;
+      enemy.jump();
       break;
   }
   console.log(event.key);
