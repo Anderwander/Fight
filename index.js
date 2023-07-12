@@ -116,6 +116,8 @@ function rectangularCollision({ rect1, rect2 }) {
   );
 }
 
+let gameOver = false;
+
 function determineWinner({ player, enemy, timerId }) {
   clearTimeout(timerId);
   document.querySelector(".result").style.display = "flex";
@@ -126,6 +128,7 @@ function determineWinner({ player, enemy, timerId }) {
   } else if (player.health < enemy.health) {
     document.querySelector(".result").innerHTML = "Gana el jugador 2";
   }
+  gameOver = true;
 }
 
 let timer = 6;
@@ -144,6 +147,7 @@ function decreaseTimer() {
 decreaseTimer();
 
 function animate() {
+  if (gameOver) return;
   window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
   c.fillStyle = "black"; // Esto es para que el canvas se rellene de color negro
   c.fillRect(0, 0, canvas.width, canvas.height);
