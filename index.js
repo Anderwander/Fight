@@ -8,82 +8,21 @@ c.fillRect(0, 0, canvas.width, canvas.height); // Esto es para rellenar el canva
 
 const gravity = 0.7;
 
-class Sprite {
-  constructor({ position, velocity, color = "red", offset }) {
-    this.position = position;
-    this.velocity = velocity;
-    this.width = 50;
-    this.height = 150;
-    this.lastkey;
-    this.isJumping = false; // Nuevo estado para el salto
-    this.attackBox = {
-      position: {
-        x: this.position.x,
-        y: this.position.y,
-      },
-      offset,
-      width: 100,
-      height: 50,
-    };
-    this.color = color;
-    this.isAttacking;
-    this.health = 100;
-  }
+const background = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: "./img/background.png",
+});
 
-  draw() {
-    c.fillStyle = this.color;
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
-    // Caja de ataque
-    if (this.isAttacking) {
-      c.fillStyle = "green";
-      c.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
-  }
-
-  update() {
-    this.draw();
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
-
-    this, (this.position.x += this.velocity.x);
-    this.position.y += this.velocity.y;
-
-    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-      this.velocity.y = 0;
-      this.isJumping = false; // Actualizar el estado del salto al tocar el suelo
-    } else {
-      this.velocity.y += gravity;
-    }
-  }
-
-  jump() {
-    if (!this.isJumping) {
-      this.velocity.y = -20;
-      this.isJumping = true;
-    }
-  }
-
-  attack() {
-    this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
-  }
-}
-
-const player = new Sprite({
+const player = new Fighter({
   position: { x: 0, y: 0 },
   velocity: { x: 0, y: 10 },
   offset: { x: 0, y: 0 },
 });
 
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: { x: 400, y: 100 },
   velocity: { x: 0, y: 0 },
   color: "blue",
@@ -107,43 +46,6 @@ const keys = {
   },
 };
 
-function rectangularCollision({ rect1, rect2 }) {
-  return (
-    rect1.attackBox.position.x + rect1.attackBox.width >= rect2.position.x &&
-    rect1.attackBox.position.x <= rect2.position.x + rect2.width &&
-    rect1.attackBox.position.y + rect1.attackBox.height >= rect2.position.y &&
-    rect1.attackBox.position.y <= rect2.position.y + rect2.height
-  );
-}
-
-let gameOver = false;
-
-function determineWinner({ player, enemy, timerId }) {
-  clearTimeout(timerId);
-  document.querySelector(".result").style.display = "flex";
-  if (player.health === enemy.health) {
-    document.querySelector(".result").innerHTML = "Empate";
-  } else if (player.health > enemy.health) {
-    document.querySelector(".result").innerHTML = "Gana el jugador 1";
-  } else if (player.health < enemy.health) {
-    document.querySelector(".result").innerHTML = "Gana el jugador 2";
-  }
-  gameOver = true;
-}
-
-let timer = 6;
-let timerId;
-function decreaseTimer() {
-  if (timer > 0) {
-    timerId = setTimeout(decreaseTimer, 1000);
-    timer--;
-    document.querySelector("#timer").innerHTML = timer;
-  }
-
-  if (timer === 0) {
-    determineWinner({ player, enemy, timerId });
-  }
-}
 decreaseTimer();
 
 function animate() {
@@ -151,6 +53,7 @@ function animate() {
   window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
   c.fillStyle = "black"; // Esto es para que el canvas se rellene de color negro
   c.fillRect(0, 0, canvas.width, canvas.height);
+  background.update();
   player.update();
   enemy.update(); // Esto es para que se ejecute la función update del objeto player
 
