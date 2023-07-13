@@ -7,20 +7,21 @@ function rectangularCollision({ rect1, rect2 }) {
   );
 }
 
-/* let gameOver = false;
- */
 function determineWinner({ player, enemy, timerId }) {
   clearTimeout(timerId);
   document.querySelector(".result").style.display = "flex";
   if (player.health === enemy.health) {
     document.querySelector(".result").innerHTML = "Empate";
+    player.switchSprite("death");
+    enemy.switchSprite("death");
   } else if (player.health > enemy.health) {
     document.querySelector(".result").innerHTML = "Gana el jugador 1";
+    enemy.switchSprite("death");
   } else if (player.health < enemy.health) {
     document.querySelector(".result").innerHTML = "Gana el jugador 2";
+    player.switchSprite("death");
   }
-  /*   gameOver = true;
-   */
+  //si el timer llega a 0, no se puede atacar
 }
 
 let timer = 60;

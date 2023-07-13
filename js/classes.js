@@ -149,9 +149,10 @@ class Fighter extends Sprite {
     this.isAttacking = true;
   }
 
+  //funcion para recibir daño que el personaje recibe -10 de vida y el enemy recibe -20 de vida
   takeHit() {
     this.health -= 10;
-
+    //si la vida es menor o igual a 0, cambia de sprite a death, si no, cambia de sprite a takeHit
     if (this.health <= 0) {
       this.switchSprite("death");
     } else {

@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
 * {
   box-sizing: border-box;
 }
 .main-container {
   position: relative;
   display: inline-block;
+  font-family: "Press Start 2P";
 }
 
 /* canvas {
@@ -20,18 +23,36 @@
   padding: 22px;
 }
 
-.enemy-bar,
+.enemy-bar {
+  position: relative;
+  width: 100%;
+  border-top: 4px solid white;
+  border-bottom: 4px solid white;
+  border-right: 4px solid white;
+  border-radius: 0 20px 20px 0;
+}
 .player-bar {
   position: relative;
-  height: 30px;
   width: 100%;
+  border-top: 4px solid white;
+  border-bottom: 4px solid white;
+  border-left: 4px solid white;
+  border-radius: 20px 0px 0px 20px;
+  border-color: rgb(255, 255, 255);
 }
-.health {
-  background-color: yellow;
+.playerhealth {
   height: 30px;
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  border-radius: 20px 0px 0px 20px;
+}
+.enemyhealth {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 0 20px 20px 0;
 }
 
 #enemyHealthContainer {
@@ -40,7 +61,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgb(38, 0, 255);
+  background: linear-gradient(
+    to right,
+    rgba(255, 0, 0, 1) 2%,
+    rgba(249, 162, 17, 1) 22%,
+    rgba(255, 253, 6, 1) 56%,
+    rgba(79, 253, 45, 1) 100%
+  );
+  border-radius: 0 20px 20px 0;
 }
 
 #playerHealthContainer {
@@ -49,17 +77,27 @@
   right: 0;
   bottom: 0;
   width: 100%;
-  background-color: rgb(38, 0, 255);
+  background: linear-gradient(
+    to left,
+    rgba(255, 0, 0, 1) 2%,
+    rgba(249, 162, 17, 1) 22%,
+    rgba(255, 253, 6, 1) 56%,
+    rgba(79, 253, 45, 1) 100%
+  );
+  border-radius: 20px 0px 0px 20px;
 }
 
 #timer {
-  background-color: red;
-  height: 100px;
+  background-color: rgba(110, 110, 110, 0.589);
+  height: 50px;
   width: 100px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  border: 4px solid white;
+  border-radius: 8px;
 }
 
 .result {

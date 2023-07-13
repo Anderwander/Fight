@@ -154,6 +154,8 @@ function animate() {
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
   shop.update();
+  c.fillStyle = "rgba(255,255,255,0.18)";
+  c.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update(); // Esto es para que se ejecute la función update del objeto player
 
@@ -206,8 +208,11 @@ function animate() {
   ) {
     enemy.takeHit();
     player.isAttacking = false;
-    document.querySelector("#enemyHealthContainer").style.width =
-      enemy.health + "%";
+
+    gsap.to("#enemyHealthContainer", {
+      // Esto es para que la barra de vida del enemigo se vaya reduciendo
+      width: enemy.health + "%",
+    });
   }
 
   if (player.isAttacking && player.frameCurrent === 4) {
@@ -222,8 +227,10 @@ function animate() {
   ) {
     player.takeHit();
     enemy.isAttacking = false;
-    document.querySelector("#playerHealthContainer").style.width =
-      player.health + "%";
+
+    gsap.to("#playerHealthContainer", {
+      width: player.health + "%",
+    });
   }
   if (enemy.isAttacking && enemy.frameCurrent === 2) {
     enemy.isAttacking = false;
