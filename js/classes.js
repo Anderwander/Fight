@@ -63,6 +63,11 @@ class Fighter extends Sprite {
     framesMax = 1,
     offset = { x: 0, y: 0 },
     sprites,
+    attackBox = {
+      offset: {},
+      width: undefined,
+      height: undefined,
+    },
   }) {
     super({
       position,
@@ -82,9 +87,9 @@ class Fighter extends Sprite {
         x: this.position.x,
         y: this.position.y,
       },
-      offset,
-      width: 100,
-      height: 50,
+      offset: attackBox.offset,
+      width: attackBox.width,
+      height: attackBox.height,
     };
     this.color = color;
     this.isAttacking;
@@ -106,8 +111,15 @@ class Fighter extends Sprite {
     this.draw();
     this.animateFrames();
 
-    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-    this.attackBox.position.y = this.position.y;
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x; // la explicacion de esta linea es que la posicion de la caja de ataque es la posicion del personaje en el eje x mas el offset
+    this.attackBox.position.y = this.position.y + this.attackBox.offset.y; // la explicacion de esta linea es que la posicion de la caja de ataque es la posicion del personaje en el eje y mas el offset
+    /*  c.fillRect(
+      // Dibujar el rectángulo de ataque
+      this.attackBox.position.x, // Posición x
+      this.attackBox.position.y, // Posición y
+      this.attackBox.width, // Ancho
+      this.attackBox.height // Alto
+    ); */
 
     this, (this.position.x += this.velocity.x);
     this.position.y += this.velocity.y;
@@ -134,9 +146,6 @@ class Fighter extends Sprite {
   attack() {
     this.switchSprite("attack1");
     this.isAttacking = true;
-    setTimeout(() => {
-      this.isAttacking = false;
-    }, 100);
   }
 
   switchSprite(sprite) {

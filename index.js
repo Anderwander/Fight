@@ -59,6 +59,14 @@ const player = new Fighter({
       framesMax: 6,
     },
   },
+  attackBox: {
+    offset: {
+      x: 65,
+      y: 50,
+    },
+    width: 192,
+    height: 50,
+  },
 });
 
 const enemy = new Fighter({
@@ -93,6 +101,14 @@ const enemy = new Fighter({
       imageSrc: "./img/kenji/Attack1.png",
       framesMax: 4,
     },
+  },
+  attackBox: {
+    offset: {
+      x: -172,
+      y: 50,
+    },
+    width: 172,
+    height: 50,
   },
 });
 
@@ -169,7 +185,8 @@ function animate() {
   //colisiones del jugador con el enemigo
   if (
     rectangularCollision({ rect1: player, rect2: enemy }) &&
-    player.isAttacking
+    player.isAttacking &&
+    player.frameCurrent === 4
   ) {
     player.isAttacking = false;
     enemy.health -= 10;
@@ -177,15 +194,23 @@ function animate() {
       enemy.health + "%";
   }
 
+  if (player.isAttacking && player.frameCurrent === 4) {
+    player.isAttacking = false;
+  }
+
   //colisiones del enemigo con el jugador
   if (
     rectangularCollision({ rect1: enemy, rect2: player }) &&
-    enemy.isAttacking
+    enemy.isAttacking &&
+    enemy.frameCurrent === 2
   ) {
     enemy.isAttacking = false;
     player.health -= 10;
     document.querySelector("#playerHealthContainer").style.width =
       player.health + "%";
+  }
+  if (enemy.isAttacking && enemy.frameCurrent === 2) {
+    enemy.isAttacking = false;
   }
 
   //Game over cuando la vida de un jugador llega a 0
