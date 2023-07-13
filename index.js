@@ -128,8 +128,8 @@ const enemy = new Fighter({
   },
 });
 
-console.log(player);
-
+/* console.log(player);
+ */
 const keys = {
   a: {
     pressed: false,
@@ -294,7 +294,8 @@ window.addEventListener("keydown", (event) => {
     }
   }
 
-  console.log(event.key);
+  /*   console.log(event.key);
+   */
 });
 
 window.addEventListener("keyup", (event) => {
