@@ -7,8 +7,8 @@ function rectangularCollision({ rect1, rect2 }) {
   );
 }
 
-let gameOver = false;
-
+/* let gameOver = false;
+ */
 function determineWinner({ player, enemy, timerId }) {
   clearTimeout(timerId);
   document.querySelector(".result").style.display = "flex";
@@ -19,7 +19,8 @@ function determineWinner({ player, enemy, timerId }) {
   } else if (player.health < enemy.health) {
     document.querySelector(".result").innerHTML = "Gana el jugador 2";
   }
-  gameOver = true;
+  /*   gameOver = true;
+   */
 }
 
 let timer = 60;

@@ -62,6 +62,10 @@ const player = new Fighter({
       imageSrc: "./img/samuraiMack/Take Hit - white silhouette.png",
       framesMax: 4,
     },
+    death: {
+      imageSrc: "./img/samuraiMack/Death.png",
+      framesMax: 6,
+    },
   },
   attackBox: {
     offset: {
@@ -109,6 +113,10 @@ const enemy = new Fighter({
       imageSrc: "./img/kenji/Take Hit.png",
       framesMax: 3,
     },
+    death: {
+      imageSrc: "./img/kenji/Death.png",
+      framesMax: 7,
+    },
   },
   attackBox: {
     offset: {
@@ -140,8 +148,8 @@ const keys = {
 decreaseTimer();
 
 function animate() {
-  if (gameOver) return;
-  window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
+  /*   if (gameOver) return;
+   */ window.requestAnimationFrame(animate); // Esto es para que se ejecute la función animate cada vez que se refresque la pantalla
   c.fillStyle = "black"; // Esto es para que el canvas se rellene de color negro
   c.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
@@ -230,48 +238,55 @@ function animate() {
 animate(); // Esto es para que se ejecute la función animate
 
 window.addEventListener("keydown", (event) => {
-  //Aquí se le dice al programa que cuando se presione una tecla, se ejecute la función que está dentro del paréntesis
-  switch (
-    event.key // Esto es para que el programa sepa qué tecla se presionó
-  ) {
-    case "d": // Aquí en el caso de que la tecla presionada sea d, se ejecuta lo siguiente
-      keys.d.pressed = true; // Aquí cambia el valor de la tecla d a true, lo que hace que la función animate sepa que la tecla d está presionada
-      player.lastkey = "d"; // Esto es para que el programa sepa que la última tecla presionada fue d
-      break; // Esto es para que el programa sepa que ya terminó de ejecutar lo que está dentro del case
+  if (!player.dead) {
+    //Aquí se le dice al programa que cuando se presione una tecla, se ejecute la función que está dentro del paréntesis
+    switch (
+      event.key // Esto es para que el programa sepa qué tecla se presionó
+    ) {
+      case "d": // Aquí en el caso de que la tecla presionada sea d, se ejecuta lo siguiente
+        keys.d.pressed = true; // Aquí cambia el valor de la tecla d a true, lo que hace que la función animate sepa que la tecla d está presionada
+        player.lastkey = "d"; // Esto es para que el programa sepa que la última tecla presionada fue d
+        break; // Esto es para que el programa sepa que ya terminó de ejecutar lo que está dentro del case
 
-    case "a":
-      keys.a.pressed = true;
-      player.lastkey = "a";
-      break;
+      case "a":
+        keys.a.pressed = true;
+        player.lastkey = "a";
+        break;
 
-    case "w":
-      player.jump();
-      break;
+      case "w":
+        player.jump();
+        break;
 
-    case " ": // Esto es para que cuando se presione la barra espaciadora, se ejecute la función attack
-      player.attack();
-      break;
-
-    //Keys del enemigo
-
-    case "ArrowRight": // Aquí en el caso de wque la tecla presionada sea ArrowRight, se ejecuta lo siguiente
-      keys.ArrowRight.pressed = true; // Aquí cambia el valor de la tecla ArrowRight a true, lo que hace que la función animate sepa que la tecla ArrowRight está presionada
-      enemy.lastkey = "ArrowRight"; // Esto es para que el programa sepa que la última tecla presionada fue d
-      break;
-
-    case "ArrowLeft":
-      keys.ArrowLeft.pressed = true;
-      enemy.lastkey = "ArrowLeft";
-      break;
-
-    case "ArrowUp":
-      enemy.jump();
-      break;
-
-    case "ArrowDown":
-      enemy.attack();
-      break;
+      case " ": // Esto es para que cuando se presione la barra espaciadora, se ejecute la función attack
+        player.attack();
+        break;
+    }
   }
+
+  if (!enemy.dead) {
+    switch (event.key) {
+      //Keys del enemigo
+
+      case "ArrowRight": // Aquí en el caso de wque la tecla presionada sea ArrowRight, se ejecuta lo siguiente
+        keys.ArrowRight.pressed = true; // Aquí cambia el valor de la tecla ArrowRight a true, lo que hace que la función animate sepa que la tecla ArrowRight está presionada
+        enemy.lastkey = "ArrowRight"; // Esto es para que el programa sepa que la última tecla presionada fue d
+        break;
+
+      case "ArrowLeft":
+        keys.ArrowLeft.pressed = true;
+        enemy.lastkey = "ArrowLeft";
+        break;
+
+      case "ArrowUp":
+        enemy.jump();
+        break;
+
+      case "ArrowDown":
+        enemy.attack();
+        break;
+    }
+  }
+
   console.log(event.key);
 });
 
