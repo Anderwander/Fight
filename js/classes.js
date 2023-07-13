@@ -148,12 +148,22 @@ class Fighter extends Sprite {
     this.isAttacking = true;
   }
 
+  takeHit() {
+    this.switchSprite("takeHit");
+    this.health -= 10;
+  }
+
   switchSprite(sprite) {
-    /*     if (this.isAttacking) return;
-     */
     if (
       this.image === this.sprites.attack1.image && // la explicación de esta linea es que si el sprite es igual al sprite de attack1, no cambie de sprite
       this.frameCurrent < this.sprites.attack1.framesMax - 1 // la explicación de esta linea es que si el frame actual es menor que el frame maximo de attack1, no cambie de sprite
+    )
+      return;
+
+    //overrride when taking hit
+    if (
+      this.image === this.sprites.takeHit.image &&
+      this.frameCurrent < this.sprites.takeHit.framesMax - 1
     )
       return;
 
@@ -194,6 +204,14 @@ class Fighter extends Sprite {
         if (this.image !== this.sprites.attack1.image) {
           this.image = this.sprites.attack1.image;
           this.framesMax = this.sprites.attack1.framesMax;
+          this.frameCurrent = 0;
+        }
+        break;
+
+      case "takeHit":
+        if (this.image !== this.sprites.takeHit.image) {
+          this.image = this.sprites.takeHit.image;
+          this.framesMax = this.sprites.takeHit.framesMax;
           this.frameCurrent = 0;
         }
         break;
