@@ -120,7 +120,8 @@ class Fighter extends Sprite {
     } else {
       this.velocity.y += gravity;
     }
-    console.log(this.position.y);
+    /*     console.log(this.position.y);
+     */
   }
 
   jump() {
@@ -131,6 +132,7 @@ class Fighter extends Sprite {
   }
 
   attack() {
+    this.switchSprite("attack1");
     this.isAttacking = true;
     setTimeout(() => {
       this.isAttacking = false;
@@ -138,6 +140,14 @@ class Fighter extends Sprite {
   }
 
   switchSprite(sprite) {
+    /*     if (this.isAttacking) return;
+     */
+    if (
+      this.image === this.sprites.attack1.image && // la explicación de esta linea es que si el sprite es igual al sprite de attack1, no cambie de sprite
+      this.frameCurrent < this.sprites.attack1.framesMax - 1 // la explicación de esta linea es que si el frame actual es menor que el frame maximo de attack1, no cambie de sprite
+    )
+      return;
+
     switch (sprite) {
       case "idle":
         if (this.image !== this.sprites.idle.image) {
@@ -169,8 +179,14 @@ class Fighter extends Sprite {
           this.framesMax = this.sprites.fall.framesMax;
           this.frameCurrent = 0;
         }
+        break;
 
-      case attack:
+      case "attack1":
+        if (this.image !== this.sprites.attack1.image) {
+          this.image = this.sprites.attack1.image;
+          this.framesMax = this.sprites.attack1.framesMax;
+          this.frameCurrent = 0;
+        }
         break;
     }
   }
